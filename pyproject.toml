@@ -1,0 +1,20 @@
+[project]
+name = "tuleap-mcp"
+version = "0.1.0"
+description = "Tuleap MCP Server"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp[cli]>=1.0.0",
+    "httpx>=0.27.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "respx>=0.21.0",
+]
+
+[project.scripts]
+tuleap-mcp = "tuleap_mcp.server:main"
