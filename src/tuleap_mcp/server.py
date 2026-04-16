@@ -24,7 +24,7 @@ async def search_users(query: str = None) -> str:
 
 @mcp.tool()
 async def get_artifact(artifact_id: int) -> str:
-    """Get details of a specific artifact."""
+    """Get details of a specific artifact. This includes the fields and values like status, start_date, end_date."""
     client = get_client()
     return str(await trackers.get_artifact_details(client, artifact_id))
 
@@ -42,9 +42,15 @@ async def search_projects(query: str = None) -> str:
 
 @mcp.tool()
 async def get_project_epics(project_id: int) -> str:
-    """Get epics for a project."""
+    """Get epics for a project. To see details like start/end dates, you might need to use get_artifact on the returned IDs."""
     client = get_client()
     return str(await agile.get_epics(client, project_id))
+
+@mcp.tool()
+async def get_project_user_stories(project_id: int, epic_id: int = None) -> str:
+    """Get user stories for a project, optionally filtered by an Epic ID."""
+    client = get_client()
+    return str(await agile.get_user_stories(client, project_id, epic_id))
 
 @mcp.tool()
 async def get_git_repos(project_id: int) -> str:
