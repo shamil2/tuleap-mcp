@@ -1,6 +1,6 @@
 # Tuleap MCP Server
 
-[![CI](https://github.com/shamilghaseeta/tuleap_mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/shamilghaseeta/tuleap_mcp/actions/workflows/ci.yml)
+[![CI](https://github.com/shamil2/tuleap-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/shamil2/tuleap-mcp/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
@@ -32,7 +32,7 @@ Exposes the following Tuleap domains to your AI assistant:
 
 2. **Clone & Setup**:
    ```bash
-   git clone https://github.com/your-username/tuleap_mcp.git
+   git clone https://github.com/shamil2/tuleap-mcp.git
    cd tuleap_mcp
    
    # Create a virtual environment
