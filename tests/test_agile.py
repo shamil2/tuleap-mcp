@@ -63,3 +63,21 @@ async def test_create_user_story():
         "/trackers/42/artifacts", json={"values": values}
     )
     assert result == {"id": 99, "title": "New Story"}
+
+
+@pytest.mark.asyncio
+async def test_create_epic():
+    client_mock = AsyncMock()
+    # Mock finding the tracker ID
+    client_mock.get.return_value = [{"id": 15, "name": "Epics"}]
+    # Mock creating the artifact
+    client_mock.post.return_value = {"id": 101, "title": "Big Feature"}
+
+    values = [{"field_id": 1, "value": "Big Feature"}]
+    result = await agile.create_epic(client_mock, project_id=1, values=values)
+
+    client_mock.get.assert_called_once_with("/projects/1/trackers")
+    client_mock.post.assert_called_once_with(
+        "/trackers/15/artifacts", json={"values": values}
+    )
+    assert result == {"id": 101, "title": "Big Feature"}
