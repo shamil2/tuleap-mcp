@@ -96,3 +96,24 @@ async def test_link_to_epic():
     }
     client_mock.put.assert_called_once_with("/artifacts/200", json=expected_payload)
     assert result == {"id": 200, "parent_id": 101}
+
+
+@pytest.mark.asyncio
+async def test_get_epic_progress():
+    client_mock = AsyncMock()
+    client_mock.get.return_value = {
+        "id": 101,
+        "values": [
+            {"label": "Status", "value": "Open"},
+            {"label": "Progress", "value": 45},
+            {"label": "Remaining Effort", "value": 10},
+            {"label": "Total Effort", "value": 22},
+        ],
+    }
+
+    result = await agile.get_epic_progress(client_mock, epic_id=101)
+
+    assert result["id"] == 101
+    assert result["Status"] == "Open"
+    assert result["Progress"] == 45
+    assert result["Remaining Effort"] == 10
