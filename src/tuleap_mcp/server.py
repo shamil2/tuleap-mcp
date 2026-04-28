@@ -91,6 +91,27 @@ async def get_git_repos(project_id: int) -> str:
     return str(await files.get_git_repositories(client, project_id))
 
 
+@mcp.tool()
+async def create_epic(project_id: int, values: list) -> str:
+    """Create a new epic artifact in a project."""
+    client = get_client()
+    return str(await agile.create_epic(client, project_id, values))
+
+
+@mcp.tool()
+async def link_to_epic(epic_id: int, child_artifact_id: int) -> str:
+    """Link a child artifact (e.g. User Story) to a parent epic."""
+    client = get_client()
+    return str(await agile.link_to_epic(client, epic_id, child_artifact_id))
+
+
+@mcp.tool()
+async def get_epic_progress(epic_id: int) -> str:
+    """Get summarized progress information for an epic (Status, Progress, Effort)."""
+    client = get_client()
+    return str(await agile.get_epic_progress(client, epic_id))
+
+
 def main():
     mcp.run()
 
