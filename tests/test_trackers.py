@@ -1,6 +1,11 @@
 import pytest
 from unittest.mock import AsyncMock
-from tuleap_mcp.tools.trackers import get_artifact_details, search_artifacts
+from tuleap_mcp.tools.trackers import (
+    get_artifact_details,
+    search_artifacts,
+    update_artifact,
+)
+from tuleap_mcp.client import TuleapClient
 
 
 @pytest.mark.asyncio
@@ -25,3 +30,19 @@ async def test_search_artifacts():
         "/artifacts", params={"tracker_id": 5, "query": "auth"}
     )
     assert result == [{"id": 100}]
+
+
+@pytest.mark.asyncio
+async def test_update_artifact():
+    client_mock = AsyncMock(spec=TuleapClient)
+    client_mock.put.return_value = {"id": 123, "status": "updated"}
+
+    values = [{"field_id": 1, "value": "New Title"}]
+    comment = "Doing some work"
+
+    result = await update_artifact(client_mock, 123, values, comment)
+
+    client_mock.put.assert_called_once_with(
+        "/artifacts/123", json={"values": values, "comment": {"body": comment}}
+    )
+    assert result == {"id": 123, "status": "updated"}
