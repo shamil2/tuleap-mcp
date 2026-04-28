@@ -54,3 +54,19 @@ async def get_user_stories(
         params["query"] = f"parent_id={epic_id}"
 
     return await client.get(f"/trackers/{tracker_id}/artifacts", params=params)
+
+
+async def create_user_story(
+    client: TuleapClient, project_id: int, values: List[Dict[str, Any]]
+) -> Dict[str, Any]:
+    """Create a new user story artifact in a project."""
+    tracker_id = await _get_tracker_id_by_name(client, project_id, "user stor")
+    if not tracker_id:
+        tracker_id = await _get_tracker_id_by_name(client, project_id, "story")
+    if not tracker_id:
+        raise Exception(
+            f"Could not find a 'User Story' tracker in project {project_id}"
+        )
+        
+    payload = {"values": values}
+    return await client.post(f"/trackers/{tracker_id}/artifacts", json=payload)

@@ -76,6 +76,13 @@ async def get_project_user_stories(project_id: int, epic_id: int = None) -> str:
 
 
 @mcp.tool()
+async def create_user_story(project_id: int, values: list) -> str:
+    """Create a new user story artifact in a project. Values should be a list of dictionaries defining the story fields."""
+    client = get_client()
+    return str(await agile.create_user_story(client, project_id, values))
+
+
+@mcp.tool()
 async def get_git_repos(project_id: int) -> str:
     """Get git repositories for a project."""
     client = get_client()
