@@ -93,3 +93,17 @@ async def link_to_epic(
         "comment": {"body": f"Linked to Epic #{epic_id} via MCP Server"},
     }
     return await client.put(f"/artifacts/{child_artifact_id}", json=payload)
+
+
+async def get_epic_progress(client: TuleapClient, epic_id: int) -> Dict[str, Any]:
+    """Get summarized progress information for an epic."""
+    artifact = await client.get(f"/artifacts/{epic_id}")
+    summary = {"id": artifact.get("id")}
+
+    # Extract relevant fields from values array
+    for v in artifact.get("values", []):
+        label = v.get("label")
+        if label in ["Status", "Progress", "Remaining Effort", "Total Effort"]:
+            summary[label] = v.get("value")
+
+    return summary
