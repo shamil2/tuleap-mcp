@@ -37,7 +37,9 @@ async def get_artifact(artifact_id: int) -> str:
 
 
 @mcp.tool()
-async def update_artifact(artifact_id: int, values: list = None, comment: str = None) -> str:
+async def update_artifact(
+    artifact_id: int, values: list = None, comment: str = None
+) -> str:
     """Update an artifact's fields or add a comment. Values should be a list of dictionaries with field updates. At least one of values or comment is required."""
     client = get_client()
     if not values and not comment:
