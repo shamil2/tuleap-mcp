@@ -1,6 +1,10 @@
 import pytest
-from unittest.mock import AsyncMock, patch
-from tuleap_mcp.tools.trackers import get_artifact_details, search_artifacts, update_artifact
+from unittest.mock import AsyncMock
+from tuleap_mcp.tools.trackers import (
+    get_artifact_details,
+    search_artifacts,
+    update_artifact,
+)
 from tuleap_mcp.client import TuleapClient
 
 

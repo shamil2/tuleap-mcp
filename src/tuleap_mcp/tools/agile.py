@@ -36,10 +36,7 @@ async def get_epics(client: TuleapClient, project_id: int) -> List[Dict[str, Any
     return await client.get(f"/trackers/{tracker_id}/artifacts")
 
 
-async def get_user_stories(
-    client: TuleapClient, project_id: int, epic_id: Optional[int] = None
-) -> List[Dict[str, Any]]:
-    """Get user stories for a project, optionally filtered by Epic parent."""
+async def _get_user_story_tracker_id(client: TuleapClient, project_id: int) -> int:
     tracker_id = await _get_tracker_id_by_name(client, project_id, "user stor")
     if not tracker_id:
         tracker_id = await _get_tracker_id_by_name(client, project_id, "story")
@@ -47,6 +44,14 @@ async def get_user_stories(
         raise Exception(
             f"Could not find a 'User Story' tracker in project {project_id}"
         )
+    return tracker_id
+
+
+async def get_user_stories(
+    client: TuleapClient, project_id: int, epic_id: Optional[int] = None
+) -> List[Dict[str, Any]]:
+    """Get user stories for a project, optionally filtered by Epic parent."""
+    tracker_id = await _get_user_story_tracker_id(client, project_id)
 
     # If epic_id is provided, we can use TQL to filter (query=parent_id=...)
     params = {}
@@ -60,13 +65,7 @@ async def create_user_story(
     client: TuleapClient, project_id: int, values: List[Dict[str, Any]]
 ) -> Dict[str, Any]:
     """Create a new user story artifact in a project."""
-    tracker_id = await _get_tracker_id_by_name(client, project_id, "user stor")
-    if not tracker_id:
-        tracker_id = await _get_tracker_id_by_name(client, project_id, "story")
-    if not tracker_id:
-        raise Exception(
-            f"Could not find a 'User Story' tracker in project {project_id}"
-        )
-        
+    tracker_id = await _get_user_story_tracker_id(client, project_id)
+
     payload = {"values": values}
     return await client.post(f"/trackers/{tracker_id}/artifacts", json=payload)
