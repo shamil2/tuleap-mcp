@@ -11,8 +11,8 @@ A secure, fully-tested **Model Context Protocol (MCP)** server for interacting w
 ## 🌟 Features
 
 Exposes the following Tuleap domains to your AI assistant:
-- **Agile & Projects**: Search projects, retrieve Epics, and list User Stories.
-- **Trackers & Artifacts**: Search for specific artifacts and get rich details (status, assigned to, dates, custom fields).
+- **Agile & Projects**: Search projects, retrieve Epics, list User Stories, and create new Epics or User Stories. Get summarized Epic progress.
+- **Trackers & Artifacts**: Search for specific artifacts, get rich details (status, assigned to, dates, custom fields), update artifact fields, and link artifacts together.
 - **Files & Repositories**: List Git repositories linked to a project.
 - **Users**: Search for Tuleap users by name or email.
 
@@ -107,8 +107,13 @@ Once connected, your AI assistant can use the following tools natively:
 - `search_projects(query)`: Find Tuleap projects.
 - `get_project_epics(project_id)`: Retrieve epics for a project via the Epic tracker.
 - `get_project_user_stories(project_id, epic_id)`: Retrieve user stories for a project, optionally filtering by parent Epic.
+- `create_epic(project_id, values)`: Create a new Epic artifact.
+- `create_user_story(project_id, values)`: Create a new User Story artifact.
+- `link_to_epic(epic_id, child_artifact_id)`: Link an artifact to a parent Epic.
+- `get_epic_progress(epic_id)`: Get summarized progress information for an Epic (Status, Progress, Effort).
 - `search_artifacts(tracker_id, query)`: Search for generic artifacts using TQL queries or keywords.
 - `get_artifact(artifact_id)`: Get deep metadata and fields for a specific artifact.
+- `update_artifact(artifact_id, values, comment)`: Update an artifact's fields or add a comment.
 - `search_users(query)`: Search for Tuleap users.
 - `get_git_repos(project_id)`: Fetch a list of git repositories linked to a project.
 
