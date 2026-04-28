@@ -81,3 +81,18 @@ async def test_create_epic():
         "/trackers/15/artifacts", json={"values": values}
     )
     assert result == {"id": 101, "title": "Big Feature"}
+
+
+@pytest.mark.asyncio
+async def test_link_to_epic():
+    client_mock = AsyncMock()
+    client_mock.put.return_value = {"id": 200, "parent_id": 101}
+
+    result = await agile.link_to_epic(client_mock, epic_id=101, child_artifact_id=200)
+
+    expected_payload = {
+        "values": [{"field_id": "parent_id", "value": 101}],
+        "comment": {"body": "Linked to Epic #101 via MCP Server"},
+    }
+    client_mock.put.assert_called_once_with("/artifacts/200", json=expected_payload)
+    assert result == {"id": 200, "parent_id": 101}

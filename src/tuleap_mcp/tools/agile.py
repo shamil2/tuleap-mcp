@@ -82,3 +82,14 @@ async def create_user_story(
 
     payload = {"values": values}
     return await client.post(f"/trackers/{tracker_id}/artifacts", json=payload)
+
+
+async def link_to_epic(
+    client: TuleapClient, epic_id: int, child_artifact_id: int
+) -> Dict[str, Any]:
+    """Link a child artifact to a parent epic."""
+    payload = {
+        "values": [{"field_id": "parent_id", "value": epic_id}],
+        "comment": {"body": f"Linked to Epic #{epic_id} via MCP Server"},
+    }
+    return await client.put(f"/artifacts/{child_artifact_id}", json=payload)
