@@ -28,12 +28,25 @@ async def _get_tracker_id_by_name(
     return None
 
 
-async def get_epics(client: TuleapClient, project_id: int) -> List[Dict[str, Any]]:
-    """Get epics for a project. Returns the artifacts from the Epic tracker."""
+async def _get_epic_tracker_id(client: TuleapClient, project_id: int) -> int:
+    """Helper to find the Epic tracker ID for a project."""
     tracker_id = await _get_tracker_id_by_name(client, project_id, "epic")
     if not tracker_id:
         raise Exception(f"Could not find an 'Epic' tracker in project {project_id}")
+    return tracker_id
+
+async def get_epics(client: TuleapClient, project_id: int) -> List[Dict[str, Any]]:
+    """Get epics for a project. Returns the artifacts from the Epic tracker."""
+    tracker_id = await _get_epic_tracker_id(client, project_id)
     return await client.get(f"/trackers/{tracker_id}/artifacts")
+
+async def create_epic(
+    client: TuleapClient, project_id: int, values: List[Dict[str, Any]]
+) -> Dict[str, Any]:
+    """Create a new epic artifact in a project."""
+    tracker_id = await _get_epic_tracker_id(client, project_id)
+    payload = {"values": values}
+    return await client.post(f"/trackers/{tracker_id}/artifacts", json=payload)
 
 
 async def _get_user_story_tracker_id(client: TuleapClient, project_id: int) -> int:
