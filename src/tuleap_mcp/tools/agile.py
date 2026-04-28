@@ -35,10 +35,12 @@ async def _get_epic_tracker_id(client: TuleapClient, project_id: int) -> int:
         raise Exception(f"Could not find an 'Epic' tracker in project {project_id}")
     return tracker_id
 
+
 async def get_epics(client: TuleapClient, project_id: int) -> List[Dict[str, Any]]:
     """Get epics for a project. Returns the artifacts from the Epic tracker."""
     tracker_id = await _get_epic_tracker_id(client, project_id)
     return await client.get(f"/trackers/{tracker_id}/artifacts")
+
 
 async def create_epic(
     client: TuleapClient, project_id: int, values: List[Dict[str, Any]]
